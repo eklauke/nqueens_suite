@@ -1,29 +1,41 @@
-USAGE
+# N-Queens Solver
+
+A C++ command-line utility designed to solve the N-Queens problem using a stack-based Depth-First Search (DFS) algorithm. The program finds a valid placement of \(N\) non-attacking queens on an \(N \times\)N chessboard, starting from either an empty board or a pre-configured partial state.
+
+## Usage
+```
 ./main [input file] [output file]
+```
 
-DESCRIPTION
-Returns a solution to the N-Queens problem based on the provided existing queens on the board, or "No Solution" if none.
+## Architecture & Class Structure
 
-CLASSES
-Board   - Represents a chessboard and holds a vector of queens.
+### `Board` Class
+Represents the chessboard configuration and encapsulates the validation logic.
 
-int size                    - The length of the chessboard.
-vector<pair<int,int>> board - The total queens on the board, represented by pairs of ints.
+#### Member Variables
+* **`int size`**: The dimensions (\(N \times N\)) of the chessboard.
+* **`std::vector<std::pair<int, int>> board`**: A list of current queen placements, represented as coordinate pairs `(row, col)`.
 
-void sort(void)             - Sorts the queens by columns, smallest to largest.
-void add (pair<int,int>)    - Adds a new queen to the board.
-bool check(void)            - Checks that the board has valid placements of current queens.
-bool validCol(int)          - Checks that a column is available.
-bool validRow(int)          - Checks that a row is available.
-bool validDia(int, int)     - Checks that a diagonal is available.
-void print(void)            - Prints the queens to the console (for debugging).
+#### Member Functions
+* **`void sort(void)`**: Sorts the placed queens by column index from smallest to largest.
+* **`void add(std::pair<int, int>)`**: Positions a new queen onto the board.
+* **`bool check(void)`**: Verifies whether all currently placed queens are in valid, non-attacking positions.
+* **`bool validCol(int col)`**: Checks if a specific column is free of other queens.
+* **`bool validRow(int row)`**: Checks if a specific row is free of other queens.
+* **`bool validDia(int row, int col)`**: Checks if a specific diagonal position is safe from existing queens.
+* **`void print(void)`**: Debugging utility that prints the current queen coordinates directly to the console.
 
-1. Parsing input and creating initial board:
-   Iterates through a line in the input file and parses and initializes the Board object with the specified size. Then, it counts the number of queens provided.
-  For as many queens as the input provides, creates them by parsing the given col and row values and adds them to the board.
-3. Simulation:
-  a.    Frontier: A Stack of Board objects.
-  b. Initial State: The initial Board as specified by the input file (if it has valid placements).
-  c. Checking States: Pull a Board from the top of the stack and check if it reaches the winning condition (N queens on the board). If so, print the pairs of columns and rows in the board to the output file and quit.
-  d. Actions: Place a queen. First checks for the first available row. Then, for each available column (that is also diagonally valid), places a queen and pushes a new board containing it to the stack.  
-  If the stack is exhausted without reaching a solution, then "No Solution" is printed to the output file.
+## Execution Flow
+
+### 1. Input Parsing & Initialization
+* The program processes the specified input file line by line.
+* It initializes a `Board` object with the designated board size \(N\).
+* It reads any pre-existing queen positions from the file, parses their row and column coordinates, and populates the initial board configuration using the `add()` function.
+
+### 2. Backtracking Simulation (DFS)
+* **Frontier**: An explicit `std::stack` containing `Board` objects to manage the search space.
+* **Initial State**: The initial configuration parsed from the input file is pushed onto the stack (provided its existing layout contains no immediate conflicts).
+* **State Evaluation**: The solver continually pops a `Board` configuration from the top of the stack. If the state contains \(N\) valid queens, it meets the winning criteria. The configuration is written to the output file, and the program terminates successfully.
+* **Actions & Successor Generation**: If a state is not a solution, the algorithm attempts to place a new queen. It identifies the first available row, iterates through each column, evaluates diagonal constraints, and pushes every valid subsequent `Board` state onto the stack.
+
+If the frontier stack is completely exhausted without satisfying the winning criteria, the program writes **"No Solution"** to the output file.
