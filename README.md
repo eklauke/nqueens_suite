@@ -1,6 +1,6 @@
 # N-Queens Solver
 
-A C++ command-line utility designed to solve the N-Queens problem using a stack-based Depth-First Search (DFS) algorithm. The program finds a valid placement of \(N\) non-attacking queens on an \(N \times\)N chessboard, starting from either an empty board or a pre-configured partial state.
+A C++ command-line utility designed to solve the N-Queens problem using a stack-based Depth-First Search (DFS) algorithm. The program finds a valid placement of \(N\) non-attacking queens on an \(N x N\) chessboard, starting from either an empty board or a pre-configured partial state.
 
 ## Usage
 ```
@@ -13,7 +13,7 @@ A C++ command-line utility designed to solve the N-Queens problem using a stack-
 Represents the chessboard configuration and encapsulates the validation logic.
 
 #### Member Variables
-* **`int size`**: The dimensions (\(N \times N\)) of the chessboard.
+* **`int size`**: The dimensions \(N x N\) of the chessboard.
 * **`std::vector<std::pair<int, int>> board`**: A list of current queen placements, represented as coordinate pairs `(row, col)`.
 
 #### Member Functions
